@@ -6,7 +6,8 @@ defmodule ParklotRsvp.ScheduleTest do
   describe "reservations" do
     alias ParklotRsvp.Schedule.Reservation
 
-    @valid_attrs %{notes: "some notes", scheduled_at: ~D[2010-04-17], user: "some user", work_related: true}
+    @valid_attrs %{notes: "some notes", scheduled_at: ~D[2010-04-17], user: "some user"}
+    @valid_attrs_without_notes %{scheduled_at: ~D[2010-04-17], user: "some user"}
     @update_attrs %{notes: "some updated notes", scheduled_at: ~D[2011-05-18], user: "some updated user", work_related: false}
     @invalid_attrs %{notes: nil, scheduled_at: nil, user: nil, work_related: nil}
 
@@ -29,12 +30,20 @@ defmodule ParklotRsvp.ScheduleTest do
       assert Schedule.get_reservation!(reservation.id) == reservation
     end
 
-    test "create_reservation/1 with valid data creates a reservation" do
+    test "create_reservation/1 with valid data and notes creates a reservation work related" do
       assert {:ok, %Reservation{} = reservation} = Schedule.create_reservation(@valid_attrs)
       assert reservation.notes == "some notes"
       assert reservation.scheduled_at == ~D[2010-04-17]
       assert reservation.user == "some user"
       assert reservation.work_related == true
+    end
+
+    test "create_reservation/1 with valid data without creates a reservation not work related" do
+      assert {:ok, %Reservation{} = reservation} = Schedule.create_reservation(@valid_attrs_without_notes)
+      assert reservation.notes == nil
+      assert reservation.scheduled_at == ~D[2010-04-17]
+      assert reservation.user == "some user"
+      assert reservation.work_related == false
     end
 
     test "create_reservation/1 with invalid data returns error changeset" do
@@ -48,7 +57,7 @@ defmodule ParklotRsvp.ScheduleTest do
       assert reservation.notes == "some updated notes"
       assert reservation.scheduled_at == ~D[2011-05-18]
       assert reservation.user == "some updated user"
-      assert reservation.work_related == false
+      assert reservation.work_related == true
     end
 
     test "update_reservation/2 with invalid data returns error changeset" do

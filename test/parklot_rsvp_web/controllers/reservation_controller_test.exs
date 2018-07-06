@@ -4,7 +4,7 @@ defmodule ParklotRsvpWeb.ReservationControllerTest do
   alias ParklotRsvp.Schedule
   alias ParklotRsvp.Schedule.Reservation
 
-  @create_attrs %{notes: "some notes", scheduled_at: ~D[2010-04-17], user: "some user", work_related: true}
+  @create_attrs %{notes: "some notes", scheduled_at: ~D[2010-04-17], user: "some user", work_related: false}
   @update_attrs %{notes: "some updated notes", scheduled_at: ~D[2011-05-18], user: "some updated user", work_related: false}
   @invalid_attrs %{notes: nil, scheduled_at: nil, user: nil, work_related: nil}
 
@@ -57,7 +57,7 @@ defmodule ParklotRsvpWeb.ReservationControllerTest do
         "notes" => "some updated notes",
         "scheduled_at" => "2011-05-18",
         "user" => "some updated user",
-        "work_related" => false}
+        "work_related" => true}
     end
 
     test "renders errors when data is invalid", %{conn: conn, reservation: reservation} do
