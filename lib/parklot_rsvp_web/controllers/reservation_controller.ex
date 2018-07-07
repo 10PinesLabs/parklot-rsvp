@@ -6,9 +6,15 @@ defmodule ParklotRsvpWeb.ReservationController do
 
   action_fallback ParklotRsvpWeb.FallbackController
 
+  import ParklotRsvpWeb.SlackInputParser
+
   def index(conn, _params) do
     reservations = Schedule.list_reservations()
     render(conn, "index.json", reservations: reservations)
+  end
+
+  def create_from_slack(conn, params) do
+    create(conn, %{"reservation" => parse_create_reservation_params(params)})
   end
 
   def create(conn, %{"reservation" => reservation_params}) do

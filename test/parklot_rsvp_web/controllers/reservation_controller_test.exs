@@ -4,7 +4,9 @@ defmodule ParklotRsvpWeb.ReservationControllerTest do
   alias ParklotRsvp.Schedule
   alias ParklotRsvp.Schedule.Reservation
 
-  @create_attrs %{notes: "some notes", scheduled_at: ~D[2010-04-17], user: "some user", work_related: false}
+  @create_attrs %{notes: "some notes", scheduled_at: "2010-04-17", user: "some user", work_related: false}
+  @create_from_slack_attrs %{"text" => "el 17-04-2010", "user_name" => "some user"}
+  @create_from_slack_with_notes_attrs %{"text" => "el 17-04-2010 por visita cliente", "user_name" => "some user"}
   @update_attrs %{notes: "some updated notes", scheduled_at: ~D[2011-05-18], user: "some updated user", work_related: false}
   @invalid_attrs %{notes: nil, scheduled_at: nil, user: nil, work_related: nil}
 
@@ -37,7 +39,32 @@ defmodule ParklotRsvpWeb.ReservationControllerTest do
         "user" => "some user",
         "work_related" => true}
     end
+    
+    test "from slack renders reservation when data is valid", %{conn: conn} do
+      conn = post conn, reservation_path(conn, :create_from_slack), @create_from_slack_attrs
+      assert %{"id" => id} = json_response(conn, 201)["data"]
 
+      conn = get conn, reservation_path(conn, :show, id)
+      assert json_response(conn, 200)["data"] == %{
+        "id" => id,
+        "notes" => nil,
+        "scheduled_at" => "2010-04-17",
+        "user" => "some user",
+        "work_related" => false}
+    end
+    test "from slack renders reservation when data is valid and is work related", %{conn: conn} do
+      conn = post conn, reservation_path(conn, :create_from_slack), @create_from_slack_with_notes_attrs
+      assert %{"id" => id} = json_response(conn, 201)["data"]
+
+      conn = get conn, reservation_path(conn, :show, id)
+      assert json_response(conn, 200)["data"] == %{
+        "id" => id,
+        "notes" => "visita cliente",
+        "scheduled_at" => "2010-04-17",
+        "user" => "some user",
+        "work_related" => true}
+    end
+    
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post conn, reservation_path(conn, :create), reservation: @invalid_attrs
       assert json_response(conn, 422)["errors"] != %{}

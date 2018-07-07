@@ -4,7 +4,7 @@ defmodule ParklotRsvp.Schedule.Reservation do
 
   schema "reservations" do
     field :notes, :string
-    field :scheduled_at, :date
+    field :scheduled_at, Timex.Ecto.Date
     field :user, :string
     field :work_related, :boolean, default: false
 
