@@ -17,3 +17,6 @@ config :parklot_rsvp, ParklotRsvp.Repo,
   database: "parklot_rsvp_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :parklot_rsvp, ParklotRsvp.Mailer,
+  adapter: Bamboo.TestAdapter

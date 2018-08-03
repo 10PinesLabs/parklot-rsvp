@@ -19,7 +19,7 @@ defmodule ParklotRsvp.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {ParklotRsvp.Application, []},
+      mod: {ParklotRsvp.Application, [:bamboo]},
       extra_applications: [:logger, :runtime_tools, :timex, :timex_ecto]
     ]
   end
@@ -41,6 +41,8 @@ defmodule ParklotRsvp.Mixfile do
       {:cowboy, "~> 1.0"},
       {:timex, "~> 3.0"},
       {:timex_ecto, "~> 3.0"},
+      {:bamboo, "~> 1.0"},
+      {:bamboo_smtp, "~> 1.5.0"},
       {:ex_matchers, "~> 0.1.2", only: :test}
     ]
   end

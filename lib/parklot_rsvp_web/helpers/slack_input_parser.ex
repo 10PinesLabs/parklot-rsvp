@@ -1,34 +1,47 @@
 defmodule ParklotRsvpWeb.SlackInputParser do
 
-    @create_reservation_regex ~r/(el)?\s?(?<scheduled_at>\d{1,2}-\d{1,2}-\d{4})(\s?(por)?\s?(?<notes>.*))?/
+    @create_reservation_regex ~r/(?<command>reservar|cancelar|mostrar)\s?(el)?\s?(?<scheduled_at>\d{1,2}-\d{1,2}-\d{4})?(\s?(por)?\s?(?<notes>.*))?/iu
     @date_format "%d-%m-%Y"
 
     def parse_create_reservation_params(params) do
 
-        captured_params = Regex.named_captures(@create_reservation_regex, params["text"])                        
+        captured_params = Regex.named_captures(@create_reservation_regex, params["text"])
 
+        validate!(captured_params)
         %{
-            user: params["user_name"], 
-            scheduled_at: scheduled_at_field(captured_params), 
+            user: params["user_name"],
+            command: String.downcase(captured_params["command"]),
+            scheduled_at: scheduled_at_field(captured_params),
             notes: notes_field((captured_params))
         }
+    end
+
+    defp validate!(params) do
+        if params["command"] == nil, do: raise ArgumentError, message: "missing command"
+        # if params["command"] == nil, do: raise ArgumentError, message: "missing command"
     end
 
     defp notes_field(captured_params) do
         Map.get(captured_params, "notes")
     end
 
-    defp scheduled_at_field(captured_params) do 
+    defp scheduled_at_field(captured_params) do
         {:ok, scheduled_at} = Timex.parse(scheduled_at_as_string(captured_params), @date_format, :strftime)
         Timex.to_date(scheduled_at)
     end
 
-    defp scheduled_at_as_string(captured_params) do 
-        Map.get(captured_params, "scheduled_at", today_as_string())
+    defp scheduled_at_as_string(captured_params) do
+        scheduled_at = Map.get(captured_params, "scheduled_at")
+        if scheduled_at == nil || byte_size(String.trim(scheduled_at)) == 0 do
+            tomorrow_as_string()
+        else
+            scheduled_at
+        end
     end
 
-    defp today_as_string do
-        {:ok, today} = Timex.format(Timex.today, @date_format, :strftime)  
+    defp tomorrow_as_string() do
+        tomorrow = Timex.shift(Timex.today, days: 1)
+        {:ok, today} = Timex.format(tomorrow, @date_format, :strftime)
         today
     end
 end

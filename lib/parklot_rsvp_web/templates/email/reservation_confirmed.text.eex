@@ -1,0 +1,6 @@
+En la fecha <%= @confirmed_reservation.scheduled_at %> se ha confirmado la siguiente reserva\n
+
+
+Usuario: <%= @confirmed_reservation.user %>\n
+Motivo: <%= @confirmed_reservation.notes %>\n
+Relacionado al trabajo?: <%= @confirmed_reservation.work_related %>

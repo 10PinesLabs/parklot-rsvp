@@ -1,0 +1,5 @@
+Hola!
+
+<%= render @view_module, @view_template, assigns %>
+
+- El equipo Cochera 10Pines.

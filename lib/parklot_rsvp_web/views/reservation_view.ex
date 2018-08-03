@@ -15,6 +15,7 @@ defmodule ParklotRsvpWeb.ReservationView do
       user: reservation.user,
       scheduled_at: reservation.scheduled_at,
       work_related: reservation.work_related,
+      confirmed: reservation.confirmed,
       notes: reservation.notes}
   end
 end

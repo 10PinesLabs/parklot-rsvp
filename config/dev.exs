@@ -44,3 +44,6 @@ config :parklot_rsvp, ParklotRsvp.Repo,
   database: "parklot_rsvp_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :parklot_rsvp, ParklotRsvp.Mailer,
+  adapter: Bamboo.LocalAdapter

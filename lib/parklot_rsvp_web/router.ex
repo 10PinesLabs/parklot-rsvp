@@ -9,6 +9,11 @@ defmodule ParklotRsvpWeb.Router do
     pipe_through :api
 
     resources "/reservations", ReservationController, except: [:new, :edit]
-    post "/reservations/create_from_slack", ReservationController, :create_from_slack      
+    post "/reservations/run_from_slack", ReservationController, :run_from_slack
+    post "/reservations/confirm_reservation", ReservationController, :confirm_reservation
+  end
+
+  if Mix.env == :dev do
+    forward "/sent_emails", Bamboo.SentEmailViewerPlug
   end
 end
