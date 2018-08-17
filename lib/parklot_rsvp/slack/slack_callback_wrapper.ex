@@ -6,6 +6,8 @@ defmodule ParklotRsvp.Slack.SlackCallbackWrapper do
   @slack_url "https://hooks.slack.com/services/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"
   @http_options [{"Content-Type", "application/json"}]
 
+  require Logger
+
   def send_reservation_callback(confirmed_reservation) do
     @slack_url
     |> post_url(build_body(confirmed_reservation), @http_options)
@@ -22,14 +24,16 @@ defmodule ParklotRsvp.Slack.SlackCallbackWrapper do
 
   defp build_body(confirmed_reservation) do
     title = "La cochera ha sido asignada a #{confirmed_reservation.user} en la fecha #{confirmed_reservation.scheduled_at}. Relacionado al trabajo? #{confirmed_reservation.work_related}"
-    attachments = %{title: title, text: Reservation.to_map(confirmed_reservation)}
+    attachments = [%{title: title, text: inspect(Reservation.to_map(confirmed_reservation))}]
 
     %{text: "Reserva confirmada!", attachments: attachments}
      |> Poison.encode!
   end
 
-  defp post_url(url, body, options),
-    do: @http_adapter.post(url, body, options)
+  defp post_url(url, body, options) do
+    Logger.debug body
+    @http_adapter.post(url, body, options)
+  end
 
   defp process_response_body(
     {:ok, %HTTPoison.Response{status_code: status_code, body: body}},
