@@ -16,9 +16,9 @@ defmodule ParklotRsvp.Slack.SlackCallbackWrapper do
 
   def send_no_reservation_callback(a_date) do
     text = "No hay ninguna reserva para el dia [#{a_date}]. Podes tomar la cochera y avisar por Whatsapp!"
-
+    body = %{text: text} |> Poison.encode!
     @slack_url
-      |> post_url(%{text: text}, @http_options)
+      |> post_url(body, @http_options)
       |> process_response_body(@slack_url)
   end
 
@@ -31,7 +31,7 @@ defmodule ParklotRsvp.Slack.SlackCallbackWrapper do
   end
 
   defp post_url(url, body, options) do
-    Logger.debug body
+    Logger.debug inspect(body)
     @http_adapter.post(url, body, options)
   end
 

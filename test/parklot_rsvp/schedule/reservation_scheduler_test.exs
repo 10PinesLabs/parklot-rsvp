@@ -47,10 +47,7 @@ defmodule ParklotRsvp.Schedule.ReservationSchedulerTest do
     Mock
       |> expect(:post, 1, fn _, payload, _ ->
         decoded_payload = Poison.decode!(payload)
-        reservation = decoded_payload["attachments"]["text"]
-        assert reservation["confirmed"] == true
         assert decoded_payload["text"] == "Reserva confirmada!"
-        assert reservation["notes"] == context[:best_candidate].notes
         {:ok, %HTTPoison.Response{status_code: 200, body: ""}}
       end)
 
@@ -64,7 +61,8 @@ defmodule ParklotRsvp.Schedule.ReservationSchedulerTest do
   test "nothing to schedule returns empty Schedule" do
     Mock
       |> expect(:post, 1, fn _, payload, _ ->
-        assert payload[:text] == "No hay ninguna reserva para el dia [#{@past_tomorrow}]. Podes tomar la cochera y avisar por Whatsapp!"
+        decoded_payload = Poison.decode!(payload)
+        assert decoded_payload["text"] == "No hay ninguna reserva para el dia [#{@past_tomorrow}]. Podes tomar la cochera y avisar por Whatsapp!"
         {:ok, %HTTPoison.Response{status_code: 200, body: ""}}
       end)
     ReservationScheduler.schedule_next_reservation(@past_tomorrow)
