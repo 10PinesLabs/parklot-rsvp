@@ -24,12 +24,12 @@ config :logger, :console,
 
 config :parklot_rsvp, ParklotRsvp.Mailer,
   adapter: Bamboo.SMTPAdapter,
-  server: "smtp.domain",
-  port: 1025,
+  server: System.get_env("SMTP_SERVER"),
+  port: System.get_env("SMTP_PORT"),
   username: System.get_env("SMTP_USERNAME"),
   password: System.get_env("SMTP_PASSWORD"),
   tls: :if_available, # can be `:always` or `:never`
-  ssl: false, # can be `true`
+  ssl: true, # can be `true`
   retries: 1
 
 config :parklot_rsvp,
