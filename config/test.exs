@@ -20,3 +20,6 @@ config :parklot_rsvp, ParklotRsvp.Repo,
 
 config :parklot_rsvp, ParklotRsvp.Mailer,
   adapter: Bamboo.TestAdapter
+
+config :parklot_rsvp,
+  http_adapter: Http.Mock

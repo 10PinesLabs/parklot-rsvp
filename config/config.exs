@@ -32,6 +32,9 @@ config :parklot_rsvp, ParklotRsvp.Mailer,
   ssl: false, # can be `true`
   retries: 1
 
+config :parklot_rsvp,
+  http_adapter: HTTPoison
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

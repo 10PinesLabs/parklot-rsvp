@@ -20,7 +20,7 @@ defmodule ParklotRsvp.Mixfile do
   def application do
     [
       mod: {ParklotRsvp.Application, [:bamboo]},
-      extra_applications: [:logger, :runtime_tools, :timex, :timex_ecto]
+      extra_applications: [:logger, :runtime_tools, :timex, :timex_ecto, :httpoison]
     ]
   end
 
@@ -43,7 +43,9 @@ defmodule ParklotRsvp.Mixfile do
       {:timex_ecto, "~> 3.0"},
       {:bamboo, "~> 1.0"},
       {:bamboo_smtp, "~> 1.5.0"},
-      {:ex_matchers, "~> 0.1.2", only: :test}
+      {:httpoison, "~> 1.2"},
+      {:ex_matchers, "~> 0.1.2", only: :test},
+      {:mox, "~> 0.4", only: :test}
     ]
   end
 

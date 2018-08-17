@@ -35,6 +35,15 @@ defmodule ParklotRsvp.Schedule.Reservation do
     Enum.map(reservations, &(&1).user)
   end
 
+  def to_map(reservation) do
+    %{id: reservation.id,
+      user: reservation.user,
+      scheduled_at: reservation.scheduled_at,
+      work_related: reservation.work_related,
+      confirmed: reservation.confirmed,
+      notes: reservation.notes}
+  end
+
   def users_emails_for(reservations) do
     users_for(reservations) |> Enum.map(fn(user) -> "#{user}@10pines.com" end)
   end
