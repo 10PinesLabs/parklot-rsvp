@@ -21,10 +21,11 @@ defmodule ParklotRsvp.Slack.SlackCallbackWrapper do
   end
 
   defp build_body(confirmed_reservation) do
-    confirmed_reservation
-      |> Reservation.to_map
-      |> Map.put(:text, "Reserva confirmada!")
-      |> Poison.encode!
+    title = "La cochera ha sido asignada a #{confirmed_reservation.user} en la fecha #{confirmed_reservation.scheduled_at}. Relacionado al trabajo? #{confirmed_reservation.work_related}"
+    attachments = %{title: title, text: Reservation.to_map(confirmed_reservation)}
+
+    %{text: "Reserva confirmada!", attachments: attachments}
+     |> Poison.encode!
   end
 
   defp post_url(url, body, options),
