@@ -46,9 +46,10 @@ defmodule ParklotRsvp.Schedule.ReservationSchedulerTest do
   test "schedule the next reservation notifies slack channel", context do
     Mock
       |> expect(:post, 1, fn _, payload, _ ->
-        assert payload[:confirmed] == true
-        assert payload[:text] == "Reserva confirmada!"
-        assert payload[:notes] == context[:best_candidate].notes
+        reservation = Poison.decode! payload
+        assert reservation["confirmed"] == true
+        assert reservation["text"] == "Reserva confirmada!"
+        assert reservation["notes"] == context[:best_candidate].notes
         {:ok, %HTTPoison.Response{status_code: 200, body: ""}}
       end)
 

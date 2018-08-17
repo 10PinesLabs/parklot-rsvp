@@ -24,6 +24,7 @@ defmodule ParklotRsvp.Slack.SlackCallbackWrapper do
     confirmed_reservation
       |> Reservation.to_map
       |> Map.put(:text, "Reserva confirmada!")
+      |> Poison.encode!
   end
 
   defp post_url(url, body, options),
