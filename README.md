@@ -32,7 +32,7 @@ Employees who give a work reason to their reservaton have priority over others.
 
 ### Invalid work reasons
 
-The machine learning IA will pick up invalid reasons and apply a penalty to those employees who get priority access to the parking space with an invalid reason.
+The AI machine learning algorithm will pick up invalid reasons and apply a penalty to those employees who get priority access to the parking space with an invalid reason.
 
 * You have to do personal stuff before, during or after going to the office
 * You have to carry in our out personal stuff to the office
