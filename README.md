@@ -27,12 +27,12 @@ Employees who give a work reason to their reservaton have priority over others.
 ### Valid work reasons
 
 * You have to arrive the office early in the morning or leave late in the afternoon for a work related reason (e.g. Give a training or meet a client in the morning. Run a meetup or meet a client late in the afternoon)
-* You have to carry some office stuff in or out.
-* You have to visit a client far from the office and before or after the meeting go to the office.
+* You have to carry some work stuff in or out the office.
+* You have to visit a client who is not withing walking distance before or after going to the office.
 
 ### Invalid work reasons
 
-The machine learning IA will pick up invalid reasons and apply a penalty those employees who get priority access to the parking space with an invalid reason.
+The machine learning IA will pick up invalid reasons and apply a penalty to those employees who get priority access to the parking space with an invalid reason.
 
 * You have to do personal stuff before, during or after going to the office
 * You have to carry in our out personal stuff to the office
