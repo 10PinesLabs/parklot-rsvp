@@ -21,7 +21,7 @@ config :parklot_rsvp, ParklotRsvpWeb.Endpoint,
   secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE")
 
 # Do not print debug messages in production
-config :logger, level: :info
+config :logger, level: String.to_atom(Map.get(System.get_env(), "LOG_LEVEL", "info"))
 
 # ## SSL Support
 #
