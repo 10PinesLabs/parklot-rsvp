@@ -31,7 +31,7 @@ jobs:
 
       - restore_cache:  # restores saved mix cache
           keys:  # list of cache keys, in decreasing specificity
-            - v1-mix-cache-{{ checksum "backend/mix.lock" }}
+            - v1-mix-cache-{{ checksum "mix.lock" }}
             - v1-mix-cache-{{ .Branch }}
             - v1-mix-cache
       - restore_cache:  # restores saved build cache
@@ -43,7 +43,7 @@ jobs:
           command: mix do deps.get, compile
           working_directory: ~/app/
       - save_cache:  # generate and store cache so `restore_cache` works
-          key: v1-mix-cache-{{ checksum "backend/mix.lock" }}
+          key: v1-mix-cache-{{ checksum "mix.lock" }}
           paths: deps
       - save_cache:  # make another less specific cache
           key: v1-mix-cache-{{ .Branch }}
@@ -52,7 +52,7 @@ jobs:
           key: v1-mix-cache
           paths: deps
       - save_cache: # don't forget to save a *build* cache, too
-          key: v1-mix-cache-{{ checksum "backend/mix.lock" }}
+          key: v1-mix-cache-{{ checksum "mix.lock" }}
           paths: _build
       - save_cache: # don't forget to save a *build* cache, too
           key: v1-build-cache-{{ .Branch }}
