@@ -20,6 +20,10 @@ A simple service to help our employees share the company's car parking space.
 
 `/cochera cancelar el 18-08-2018`
 
+## Email notifications
+
+Email notification with the reservation selected will be sent only to the users who have scheduled a reservation on that day. The Slack user name should match with the email address or email alias (E.g. Slack user 'egutter' should match with email 'egutter@10pines.com')
+
 ## Work reasons
 
 Employees who give a work reason to their reservaton have priority over others.
