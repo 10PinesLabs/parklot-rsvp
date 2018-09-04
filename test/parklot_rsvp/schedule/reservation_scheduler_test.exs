@@ -7,6 +7,8 @@ defmodule ParklotRsvp.Schedule.ReservationSchedulerTest do
 
   alias ParklotRsvp.Schedule.ReservationScheduler
   alias ParklotRsvpWeb.ReservationEmail
+  alias ParklotRsvp.Schedule.TokenMock
+  alias ParklotRsvp.Schedule.GoogleApiMock
 
   alias Http.Mock
 
@@ -19,7 +21,16 @@ defmodule ParklotRsvp.Schedule.ReservationSchedulerTest do
 
   setup do
     Mock
-    |> stub(:post, fn _, _, _ -> {:ok, %HTTPoison.Response{status_code: 200, body: ""}} end)
+      |> stub(:post, fn _, _, _ -> {:ok, %HTTPoison.Response{status_code: 200, body: ""}} end)
+
+    ParklotRsvp.Schedule.GoogleConnectionMock
+      |> stub(:new, fn _ -> %Tesla.Client{} end )
+
+    GoogleApiMock
+      |> stub(:calendar_events_insert, fn _, _, _ -> {:ok, %GoogleApi.Calendar.V3.Model.Event{}} end)
+
+    TokenMock
+      |> stub(:for_scope, fn _ -> {:ok, %{token: ""}} end)
 
     reservation_fixture(%{user: "john", notes: nil, scheduled_at: @tomorrow})
     reservation_fixture(%{user: "paul", notes: nil, scheduled_at: @tomorrow})
@@ -43,7 +54,7 @@ defmodule ParklotRsvp.Schedule.ReservationSchedulerTest do
       ["john@10pines.com",  "paul@10pines.com", "george@10pines.com", "ringo@10pines.com"], confirmed_reservation)
   end
 
-  test "schedule the next reservation notifies slack channel", context do
+  test "schedule the next reservation notifies slack channel" do
     Mock
       |> expect(:post, 1, fn _, payload, _ ->
         decoded_payload = Poison.decode!(payload)
@@ -55,7 +66,14 @@ defmodule ParklotRsvp.Schedule.ReservationSchedulerTest do
   end
 
   test "schedule the next reservation adds event to calendar" do
-    # TODO
+    GoogleApiMock
+      |> expect(:calendar_events_insert, 1, fn _, _, _ ->
+      {:ok, %GoogleApi.Calendar.V3.Model.Event{}}
+    end)
+
+    ReservationScheduler.schedule_next_reservation()
+
+    verify!(GoogleApiMock)
   end
 
   test "nothing to schedule returns empty Schedule" do

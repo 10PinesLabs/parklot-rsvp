@@ -45,7 +45,9 @@ defmodule ParklotRsvp.Mixfile do
       {:bamboo_smtp, "~> 1.5.0"},
       {:httpoison, "~> 1.2"},
       {:ex_matchers, "~> 0.1.2", only: :test},
-      {:mox, "~> 0.4", only: :test}
+      {:mox, "~> 0.4", only: :test},
+      {:google_api_calendar, "~> 0.0.1"},
+      {:goth, "~> 0.10.0"}
     ]
   end
 
@@ -59,7 +61,7 @@ defmodule ParklotRsvp.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end

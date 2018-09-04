@@ -56,7 +56,27 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
+### Google Calendar Integration
+
+We are using google calendar integration for creating an event when the reservation is confirmed.
+
+Before starting up the server, you need to setup some environment variables:
+
+#### Authentication
+`GOOGLE_PRIVATE_KEY_ID`: unique identifier for the user private key,
+`GOOGLE_PRIVATE_KEY`: the actual private key. 
+`GOOGLE_CLIENT_EMAIL`: service account email.
+`GOOGLE_CLIENT_ID`: the service account id.
+
+For develop, we reccomend to generate an auth file for the service acccount (see [Google Documentation](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount) for more info) and simply set the file path in the `GOOGLE_APPLICATION_CREDENTIALS` environment variable:
+
+```
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/the/file.json
+```
+
+#### Calendar specific
+`GOOGLE_CALENDAR_ID`: the calendar ID. The service account needs to have write permissions over the calendar. **This variable is mandatory** regardless the authentication method you choose. If this variable isn't set, the application **will not generate a calendar event**
+
 
 ### Learn more
 
