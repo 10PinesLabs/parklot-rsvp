@@ -1,7 +1,7 @@
 defmodule ParklotRsvp.Schedule.ReservationScheduler do
-
   alias ParklotRsvp.Schedule.Reservation
   alias ParklotRsvp.Schedule.ReservationBestCandidate
+  alias ParklotRsvp.Schedule.Calendar
   alias ParklotRsvp.Schedule
   alias ParklotRsvp.Mailer
   alias ParklotRsvpWeb.ReservationEmail
@@ -38,7 +38,7 @@ defmodule ParklotRsvp.Schedule.ReservationScheduler do
   end
 
   defp add_event_to_calendar(confirmed_reservation) do
-    #TODO: Implement ME
+    Calendar.create_event(confirmed_reservation)
     confirmed_reservation
   end
 

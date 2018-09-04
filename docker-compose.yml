@@ -1,0 +1,10 @@
+db:
+  image: postgres
+  ports:
+    - "5432:5432"
+  volumes:
+    - .:/media
+  environment:
+    POSTGRES_PASSWORD: postgres
+    POSTGRES_DB: parklot_rsvp_dev
+
