@@ -92,6 +92,16 @@ defmodule ParklotRsvpWeb.ReservationControllerTest do
       conn = post conn, reservation_path(conn, :create), reservation: @invalid_attrs
       assert json_response(conn, 422)["errors"] != %{}
     end
+
+    test "renders an error when trying to make a reservation twice", %{conn: conn} do
+      post conn, reservation_path(conn, :run_from_slack), @create_from_slack_attrs
+      conn = post conn, reservation_path(conn, :run_from_slack), @create_from_slack_attrs
+      result = json_response(conn, 422)["errors"]
+      assert result != %{}
+      [ message ] = result["user"]
+      assert message =~ "already has a reservation"
+    end
+
   end
 
   describe "update reservation" do
