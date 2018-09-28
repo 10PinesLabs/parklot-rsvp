@@ -18,6 +18,10 @@ defmodule ParklotRsvp.Schedule.Reservation do
     |> cast(attrs, [:user, :scheduled_at, :work_related, :notes])
     |> validate_required([:user, :scheduled_at])
     |> set_work_related
+    |> unique_constraint(
+      :user,
+      name: :reservations_user_scheduled_at_index,
+      message: "already has a reservation the #{attrs[:scheduled_at]}")
   end
 
   def update_changeset(reservation, attrs) do
