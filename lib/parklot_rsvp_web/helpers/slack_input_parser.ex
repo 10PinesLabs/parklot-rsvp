@@ -17,8 +17,7 @@ defmodule ParklotRsvpWeb.SlackInputParser do
     end
 
     defp validate!(params) do
-        if params["command"] == nil, do: raise ArgumentError, message: "missing command"
-        # if params["command"] == nil, do: raise ArgumentError, message: "missing command"
+        if params["command"] == nil, do: raise ParklotRsvpWeb.InputError, message: "missing command"
     end
 
     defp notes_field(captured_params) do
@@ -33,15 +32,8 @@ defmodule ParklotRsvpWeb.SlackInputParser do
     defp scheduled_at_as_string(captured_params) do
         scheduled_at = Map.get(captured_params, "scheduled_at")
         if scheduled_at == nil || byte_size(String.trim(scheduled_at)) == 0 do
-            tomorrow_as_string()
-        else
-            scheduled_at
+            raise ParklotRsvpWeb.InputError, message: "missing or invalid scheduled_at"
         end
-    end
-
-    defp tomorrow_as_string() do
-        tomorrow = Timex.shift(Timex.today, days: 1)
-        {:ok, today} = Timex.format(tomorrow, @date_format, :strftime)
-        today
+        scheduled_at
     end
 end

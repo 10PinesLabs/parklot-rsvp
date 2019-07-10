@@ -28,19 +28,20 @@ defmodule ParklotRsvpWeb.SlackInputParserTest do
             result = SlackInputParser.parse_create_reservation_params(params)
 
             expect result[:command], to: eq("mostrar")
+            expect result[:scheduled_at], to: eq(~D[2001-01-19])
         end
         test "missing" do
             params = %{"text" => "el 19-01-2001", "user_name" => "jose"}
             fun = fn() -> SlackInputParser.parse_create_reservation_params(params) end
 
-            expect fun, to: raise_error(ArgumentError),
+            expect fun, to: raise_error(ParklotRsvpWeb.InputError),
                       with: "missing command"
         end
         test "unknown" do
             params = %{"text" => "damela el 19-01-2001", "user_name" => "jose"}
             fun = fn() -> SlackInputParser.parse_create_reservation_params(params) end
 
-            expect fun, to: raise_error(ArgumentError),
+            expect fun, to: raise_error(ParklotRsvpWeb.InputError),
                       with: "missing command"
         end
     end
@@ -69,10 +70,10 @@ defmodule ParklotRsvpWeb.SlackInputParserTest do
 
         test "missing is today" do
             params = %{"text" => "reservar por motivos varios", "user_name" => "jose"}
-            result = SlackInputParser.parse_create_reservation_params(params)
+            fun = fn() -> SlackInputParser.parse_create_reservation_params(params) end
 
-            tomorrow = Timex.shift(Timex.today, days: 1)
-            expect result[:scheduled_at], to: eq(tomorrow)
+            expect fun, to: raise_error(ParklotRsvpWeb.InputError),
+                      with: "missing or invalid scheduled_at"
         end
     end
 
