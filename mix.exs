@@ -46,8 +46,8 @@ defmodule ParklotRsvp.Mixfile do
       {:httpoison, "~> 1.2"},
       {:ex_matchers, "~> 0.1.2", only: :test},
       {:mox, "~> 0.4", only: :test},
-      {:google_api_calendar, "~> 0.0.1"},
-      {:goth, "~> 0.10.0"}
+      {:google_api_calendar, "~> 0.21"},
+      {:goth, "~> 1.2.0"}
     ]
   end
 
